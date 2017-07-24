@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Aves.IdentifyTab"
+             Title="Identify">
+
+    <StackLayout Spacing="20" Margin="20" Orientation="Vertical">
+
+        <StackLayout x:Name="stckGallery" Orientation="Horizontal" BackgroundColor="#1de9b6" Padding="20">
+            <Image Source="gall_250.png"
+                   HorizontalOptions="Start"
+                   HeightRequest="100">
+                <TapGestureRecognizer Tapped="BtnCamera_OnClicked" />
+            </Image>
+            <Button x:Name="btnGallery" 
+                Text="Select From Gallery" 
+                    Clicked="BtnGallery_OnClicked" 
+                    BackgroundColor="#1de9b6" 
+                    HorizontalOptions="CenterAndExpand"
+                    HeightRequest="100" 
+                    WidthRequest="150"/>
+        </StackLayout>
+
+        <StackLayout x:Name="stcCamera" Orientation="Horizontal" BackgroundColor="#00bad1" Padding="20">
+            <Button x:Name="btnCamera"
+                Text="Take New Photo" 
+                Clicked="BtnCamera_OnClicked" 
+                BackgroundColor="#00bad1" 
+                HorizontalOptions="CenterAndExpand"
+                HeightRequest="100" />
+            <Image Source="cam_250.png"
+                   HorizontalOptions="End"
+                   HeightRequest="100">
+                <TapGestureRecognizer Tapped="BtnCamera_OnClicked" />
+            </Image>
+        </StackLayout>
+
+        <Label Text="Start by selecting an existing image from the gallery or snap a quick photo if the bird's in front of you right now!" 
+               VerticalTextAlignment="Center" 
+               HorizontalTextAlignment="Center"
+               FontSize="20"
+               HeightRequest="100"/>
+
+        <!--IMAGE OUTPUT--><!--
+        <StackLayout Orientation="Horizontal">
+            <Label x:Name="lblTagLabel">
+            </Label>
+            <Label x:Name="lblPredictionLabel">
+            </Label>
+        </StackLayout>
+        <Image x:Name="imgPhoto" Aspect="AspectFit"/>-->
+    </StackLayout>
+
+</ContentPage>

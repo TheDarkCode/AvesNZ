@@ -108,6 +108,13 @@
     <None Include="Aves.UWP_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\cam_125.png" />
+    <Content Include="Assets\cam_250.png" />
+    <Content Include="Assets\cam_500.png" />
+    <Content Include="Assets\gall_150.png" />
+    <Content Include="Assets\gall_250.png" />
+    <Content Include="Assets\gall_500.png" />
+    <Content Include="Assets\icon.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-100.png" />
     <Content Include="Assets\LockScreenLogo.scale-125.png" />
