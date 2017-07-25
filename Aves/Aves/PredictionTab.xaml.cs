@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Aves.Models;
 using Newtonsoft.Json;
+using Plugin.Geolocator;
 using Plugin.Media.Abstractions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -18,6 +19,7 @@ namespace Aves
     public partial class PredictionTab : ContentPage
     {
         private List<String> _predictions;
+        private MediaFile _image;
 
         public PredictionTab(MediaFile image)
         {
@@ -27,10 +29,11 @@ namespace Aves
 
         private async void PerformTasks(MediaFile image)
         {
+            _image = image;
             // old, causes issues with threads...
             //Task.Run(() => this.MakePrediction(image)).ContinueWith(ShowResults(_predictions, image));
-            await MakePrediction(image);
-            ShowResults(_predictions, image);
+            await MakePrediction(_image);
+            ShowResults(_predictions, _image);
         }
 
         static byte[] GetImageAsByteArray(MediaFile file)
@@ -73,7 +76,7 @@ namespace Aves
             }
         }
 
-        private void ShowResults(List<string> prediction, MediaFile image)
+        private async void ShowResults(List<string> prediction, MediaFile image)
         {
             imgPhoto.Source = image.Path;
 
@@ -86,6 +89,8 @@ namespace Aves
                 case 1:
                     lblIntro.Text = "We think it\'s a";
                     lblPredictionLabel.Text = prediction[0];
+                    // save search
+                    await SubmitSearchHistory(prediction);
                     break;
                 default:
                     StringBuilder result = new StringBuilder();
@@ -105,8 +110,33 @@ namespace Aves
             stckImage.IsVisible = true;
         }
 
+        // save search to history
+        private static async Task SubmitSearchHistory(List<string> prediction)
+        {
+            //get location
+            var locator = CrossGeolocator.Current;
+            locator.DesiredAccuracy = 50;
+
+            var position = await locator.GetPositionAsync(TimeSpan.FromSeconds(5));
+
+            await AzureManager.AzureManagerInstance.SubmitSearchHistory(new SearchHistoryModel()
+            {
+                Bird = prediction[0],
+                Date = DateTime.Now,
+                Longitude = (float)position.Longitude,
+                Latitude = (float)position.Latitude
+            });
+        }
+
         private async void StartOver_OnClicked(object sender, EventArgs e)
         {
+            _image.Dispose();
+            await Navigation.PopModalAsync();
+        }
+
+        private async void BtnSaveImage_OnClicked(object sender, EventArgs e)
+        {
+            //TODO: Save image to gallery. At the moment image remains in the Android/Aves/Temp folder
             await Navigation.PopModalAsync();
         }
     }

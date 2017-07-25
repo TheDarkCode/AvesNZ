@@ -16,17 +16,21 @@ namespace Aves
 
         private AzureManager()
         {
-            this._client = new MobileServiceClient(@"http://avesnz.azurewebsites.net");
-            this.searchHistoryTable = this._client.GetTable<SearchHistoryModel>();
+            _client = new MobileServiceClient(@"http://avesnz.azurewebsites.net");
+            searchHistoryTable = _client.GetTable<SearchHistoryModel>();
         }
 
         public MobileServiceClient AzureClient => _client;
-
         public static AzureManager AzureManagerInstance => _instance ?? (_instance = new AzureManager());
 
         public async Task<List<SearchHistoryModel>> GetSearchHistory()
         {
-            return await this.searchHistoryTable.ToListAsync();
+            return await searchHistoryTable.ToListAsync();
+        }
+
+        public async Task SubmitSearchHistory(SearchHistoryModel searchHistory)
+        {
+            await searchHistoryTable.InsertAsync(searchHistory);
         }
     }
 }

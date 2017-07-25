@@ -17,18 +17,25 @@
                 <!--RESULT OUTPUT-->
                 <StackLayout x:Name="stckResult" Padding="20" Orientation="Horizontal" BackgroundColor="#1ee8b6" IsVisible="False">
                     <StackLayout Orientation="Horizontal">
-                        <Label x:Name="lblIntro" Text="Test" FontSize="20" />
-                        <Label x:Name="lblPredictionLabel" Text="TEST" FontSize="20" FontAttributes="Bold" />
+                        <Label x:Name="lblIntro" FontSize="20" />
+                        <Label x:Name="lblPredictionLabel" FontSize="20" FontAttributes="Bold" />
                     </StackLayout>
                 </StackLayout>
                 <StackLayout x:Name="stckImage" IsVisible="False">
                     <Image x:Name="imgPhoto" Aspect="AspectFit"/>
-                    <Button Text="Go Back"
-                            Margin="20"
-                            BackgroundColor="#00bad1"
-                            HorizontalOptions="Center"
+                    <StackLayout Orientation="Horizontal" 
+                                 HorizontalOptions="Center"
+                                 Margin="20">
+                        <Button Text="Go Back"
+                            BackgroundColor="#00d1cb"
                             HeightRequest="40"
                             Clicked="StartOver_OnClicked"/>
+                        <Button x:Name="btnSaveImage"
+                            Text="Save Image"
+                            HeightRequest="40"
+                            BackgroundColor="#00d191"
+                            Clicked="BtnSaveImage_OnClicked"/>
+                    </StackLayout>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

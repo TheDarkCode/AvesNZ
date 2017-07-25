@@ -3,25 +3,53 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Aves.HistoryTab"
              Title="History">
-    
-    <StackLayout>
-        <Label Text="Birds you searched for appear here" />
-    </StackLayout>
-    <!--MSA STUFF-->
-    <StackLayout>
-        <Button Text="See Photo Information" TextColor="White" BackgroundColor="Red" Clicked="Handle_ClickedAsync" />
-        <ListView x:Name="lvHistory" HasUnevenRows="True">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding Date}" HorizontalOptions="FillAndExpand" Margin="20,0,0,0" VerticalTextAlignment="Center" />
-                                <Label Text="{Binding Bird}" VerticalTextAlignment="Center" Margin="0,0,20,0" />
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+    <ScrollView>
+        <StackLayout>
+            <StackLayout BackgroundColor="#1ee8b6"
+                   HeightRequest="100">
+                <Label Text="Birds you've found before"
+                   TextColor="#fff"
+                   FontSize="20" 
+                   Margin="20"
+                   HorizontalOptions="Center"
+                   VerticalOptions="CenterAndExpand"/>
+            </StackLayout>
+            <BoxView HeightRequest="3" BackgroundColor="#ececec" Margin="0, -6, 0, 0" />
+
+            <ListView x:Name="HistoryListView" 
+                      HasUnevenRows="true" 
+                      IsPullToRefreshEnabled="True" 
+                      Refreshing="HistoryListView_OnRefreshing">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Grid.Column="0" Orientation="Vertical" Margin="20,0,0,0">
+                                    <Label Text="{Binding Bird}" FontAttributes="Bold" />
+                                    <Label Text="{Binding Date}" />
+                                </StackLayout>
+                                <StackLayout Grid.Column="1" Grid.RowSpan="2" Margin="0,0,20,0">
+                                    <Button x:Name="btnMap"
+                                            Text="Map"
+                                            Clicked="BtnMap_OnClicked"
+                                            CommandParameter="{Binding Id}"
+                                            WidthRequest="50">
+                                    </Button>
+                                </StackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ScrollView>
 
 </ContentPage>

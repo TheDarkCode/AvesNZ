@@ -2,53 +2,58 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Aves.IdentifyTab"
-             Title="Identify">
+             Title="Identify"
+             BackgroundColor="#fff">
 
-    <StackLayout Spacing="20" Margin="20" Orientation="Vertical">
-
-        <StackLayout x:Name="stckGallery" Orientation="Horizontal" BackgroundColor="#1de9b6" Padding="20">
-            <Image Source="gall_250.png"
-                   HorizontalOptions="Start"
-                   HeightRequest="100">
-                <TapGestureRecognizer Tapped="BtnCamera_OnClicked" />
-            </Image>
-            <Button x:Name="btnGallery" 
-                Text="Select From Gallery" 
-                    Clicked="BtnGallery_OnClicked" 
-                    BackgroundColor="#1de9b6" 
-                    HorizontalOptions="CenterAndExpand"
-                    HeightRequest="100" 
-                    WidthRequest="150"/>
-        </StackLayout>
-
-        <StackLayout x:Name="stcCamera" Orientation="Horizontal" BackgroundColor="#00bad1" Padding="20">
-            <Button x:Name="btnCamera"
-                Text="Take New Photo" 
-                Clicked="BtnCamera_OnClicked" 
-                BackgroundColor="#00bad1" 
-                HorizontalOptions="CenterAndExpand"
-                HeightRequest="100" />
-            <Image Source="cam_250.png"
-                   HorizontalOptions="End"
-                   HeightRequest="100">
-                <TapGestureRecognizer Tapped="BtnCamera_OnClicked" />
-            </Image>
-        </StackLayout>
-
-        <Label Text="Start by selecting an existing image from the gallery or snap a quick photo if the bird's in front of you right now!" 
-               VerticalTextAlignment="Center" 
+    <StackLayout Spacing="0" Orientation="Vertical">
+        <Label VerticalTextAlignment="Center" 
                HorizontalTextAlignment="Center"
                FontSize="20"
-               HeightRequest="100"/>
+               HeightRequest="100"
+               TextColor="#fff"
+               BackgroundColor="#1ee8b6">
+            <Label.Text>
+                Identify any New Zealand bird
+Select image source below
+            </Label.Text>
+        </Label>
+        <BoxView HeightRequest="3" BackgroundColor="#ececec" />
+        
+        <Grid VerticalOptions="FillAndExpand" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackLayout x:Name="stckGallery" Grid.Row="0" Orientation="Horizontal" BackgroundColor="#1de9e3" Padding="20">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="BtnGallery_OnClicked"/>
+                </StackLayout.GestureRecognizers>
+                <Image Source="gall_250.png"
+                   HorizontalOptions="Start"
+                   HeightRequest="100" />
+                <Label x:Name="btnGallery" 
+                Text="SELECT FROM GALLERY" 
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    FontSize="16"
+                    TextColor="#fff"/>
+            </StackLayout>
 
-        <!--IMAGE OUTPUT--><!--
-        <StackLayout Orientation="Horizontal">
-            <Label x:Name="lblTagLabel">
-            </Label>
-            <Label x:Name="lblPredictionLabel">
-            </Label>
-        </StackLayout>
-        <Image x:Name="imgPhoto" Aspect="AspectFit"/>-->
+            <StackLayout x:Name="stcCamera" Grid.Row="1" Orientation="Horizontal" BackgroundColor="#91f9a0" Padding="20">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="BtnCamera_OnClicked"/>
+                </StackLayout.GestureRecognizers>
+                <Label x:Name="btnCamera"
+                Text="TAKE NEW PHOTO" 
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                FontSize="16"
+                TextColor="#fff" />
+                <Image Source="cam_250.png"
+                   HorizontalOptions="End"
+                   HeightRequest="100" />
+            </StackLayout>
+        </Grid>
     </StackLayout>
 
 </ContentPage>
