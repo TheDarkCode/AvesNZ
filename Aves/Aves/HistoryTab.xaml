@@ -5,14 +5,21 @@
              Title="History">
     <ScrollView>
         <StackLayout>
-            <StackLayout BackgroundColor="#1ee8b6"
+            <StackLayout BackgroundColor="#2196f3"
                    HeightRequest="100">
-                <Label Text="Birds you've found before"
+                <Label Text="BIRDS YOU'VE FOUND BEFORE"
                    TextColor="#fff"
                    FontSize="20" 
                    Margin="20"
                    HorizontalOptions="Center"
-                   VerticalOptions="CenterAndExpand"/>
+                   VerticalOptions="CenterAndExpand">
+                    <Label.FontFamily>
+                        <OnPlatform x:TypeArguments="x:String">
+                            <On Platform="Android" Value="Raleway-Regular.ttf#Raleway-Regular"/>
+                            <On Platform="WinPhone" Value="\Assets\Raleway-Regular.ttf#Raleway-Regular"/>
+                        </OnPlatform>
+                    </Label.FontFamily>
+                </Label>
             </StackLayout>
             <BoxView HeightRequest="3" BackgroundColor="#ececec" Margin="0, -6, 0, 0" />
 

@@ -6,15 +6,22 @@
              BackgroundColor="#fff">
 
     <StackLayout Spacing="0" Orientation="Vertical">
-        <Label VerticalTextAlignment="Center" 
+        <Label x:Name="lblTitle" 
+            VerticalTextAlignment="Center" 
                HorizontalTextAlignment="Center"
                FontSize="20"
                HeightRequest="100"
                TextColor="#fff"
-               BackgroundColor="#1ee8b6">
+               BackgroundColor="#2196f3">
+            <Label.FontFamily>
+                <OnPlatform x:TypeArguments="x:String">
+                    <On Platform="Android" Value="Raleway-Regular.ttf#Raleway-Regular"/>
+                    <On Platform="WinPhone" Value="\Assets\Raleway-Regular.ttf#Raleway-Regular"/>
+                </OnPlatform>
+            </Label.FontFamily>
             <Label.Text>
-                Identify any New Zealand bird
-Select image source below
+                IDENTIFY ANY NEW ZEALAND BIRD
+SELECT IMAGE SOURCE BELOW
             </Label.Text>
         </Label>
         <BoxView HeightRequest="3" BackgroundColor="#ececec" />
@@ -28,7 +35,7 @@ Select image source below
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer Tapped="BtnGallery_OnClicked"/>
                 </StackLayout.GestureRecognizers>
-                <Image Source="gall_250.png"
+                <Image Source="gal_bird_white.png"
                    HorizontalOptions="Start"
                    HeightRequest="100" />
                 <Label x:Name="btnGallery" 
@@ -49,7 +56,7 @@ Select image source below
                 VerticalOptions="CenterAndExpand"
                 FontSize="16"
                 TextColor="#fff" />
-                <Image Source="cam_250.png"
+                <Image Source="cam_bird_white.png"
                    HorizontalOptions="End"
                    HeightRequest="100" />
             </StackLayout>

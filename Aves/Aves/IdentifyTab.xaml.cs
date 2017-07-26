@@ -31,6 +31,10 @@ namespace Aves
                 return;
             }
 
+            // click animation
+            await stcCamera.ScaleTo(1.1, 100, Easing.CubicIn);
+            await stcCamera.ScaleTo(1, 100, Easing.Linear);
+
             MediaFile image = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
             {
                 PhotoSize = PhotoSize.Medium,
@@ -48,6 +52,10 @@ namespace Aves
                 await DisplayAlert("No gallery access", "Aves needs access to the gallery in order to work", "Close");
                 return;
             }
+
+            // click animation
+            await stckGallery.ScaleTo(1.1, 100, Easing.CubicIn);
+            await stckGallery.ScaleTo(1, 100, Easing.Linear);
 
             MediaFile image = await CrossMedia.Current.PickPhotoAsync();
 
