@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Aves.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using Aves.Models;
-using Microsoft.WindowsAzure.MobileServices;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -21,7 +19,7 @@ namespace Aves
 
         private async void GetSearchHistory()
         {
-            List<SearchHistoryModel> searchHistory = await AzureManager.AzureManagerInstance.GetSearchHistory();
+            List<SearchHistoryModel> searchHistory = await AzureData.AzureDataInstance.GetSearchHistory();
             HistoryListView.ItemsSource = searchHistory;
             HistoryListView.IsRefreshing = false;
         }
@@ -35,9 +33,11 @@ namespace Aves
         {
             Button btn = sender as Button;
 
-            var allItems = await AzureManager.AzureManagerInstance.GetSearchHistory();
+            //TODO: more efficient way of retrieving coordinates.
+            var allItems = await AzureData.AzureDataInstance.GetSearchHistory();
             SearchHistoryModel selectedItem = allItems.SingleOrDefault(s => s.Id == btn.CommandParameter.ToString());
 
+            //TODO: Add iOS & WinMobile platform URI's
             Device.OpenUri(new Uri($"geo:0,0?q={selectedItem.Latitude} {selectedItem.Longitude}"));
         }
     }

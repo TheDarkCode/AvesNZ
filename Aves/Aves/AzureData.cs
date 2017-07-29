@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Aves.Models;
+﻿using Aves.Models;
 using Microsoft.WindowsAzure.MobileServices;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Aves
 {
-    class AzureManager
+    class AzureData
     {
-        private static AzureManager _instance;
+        private static AzureData _instance;
         private MobileServiceClient _client;
         private IMobileServiceTable<SearchHistoryModel> searchHistoryTable;
 
-        private AzureManager()
+        public AzureData()
         {
             _client = new MobileServiceClient(@"http://avesnz.azurewebsites.net");
             searchHistoryTable = _client.GetTable<SearchHistoryModel>();
         }
 
         public MobileServiceClient AzureClient => _client;
-        public static AzureManager AzureManagerInstance => _instance ?? (_instance = new AzureManager());
+        public static AzureData AzureDataInstance => _instance ?? (_instance = new AzureData());
 
         public async Task<List<SearchHistoryModel>> GetSearchHistory()
         {

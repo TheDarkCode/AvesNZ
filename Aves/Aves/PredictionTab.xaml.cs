@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Aves.Models;
+using Newtonsoft.Json;
+using Plugin.Geolocator;
+using Plugin.Media.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,10 +10,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Aves.Models;
-using Newtonsoft.Json;
-using Plugin.Geolocator;
-using Plugin.Media.Abstractions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -36,7 +36,7 @@ namespace Aves
             ShowResults(_predictions, _image);
         }
 
-        static byte[] GetImageAsByteArray(MediaFile file)
+        private byte[] ImageToByteArray(MediaFile file)
         {
             var stream = file.GetStream();
             BinaryReader binaryReader = new BinaryReader(stream);
@@ -47,29 +47,30 @@ namespace Aves
         {
             var client = new HttpClient { DefaultRequestHeaders = { { "Prediction-Key", "0e0a735690e14bccafd0ac94acd572e5" } } };
 
-            string url = "https://southcentralus.api.cognitive.microsoft.com/customvision/v1.0/Prediction/3f3b150a-e19c-4acb-ae03-5d7078f5c288/image?iterationId=ec6c19e5-4f8e-4385-87c5-3754f8ce4102";
+            const string apiUrl = "https://southcentralus.api.cognitive.microsoft.com/customvision/v1.0/Prediction/3f3b150a-e19c-4acb-ae03-5d7078f5c288/image?iterationId=ec6c19e5-4f8e-4385-87c5-3754f8ce4102";
 
-            byte[] byteData = GetImageAsByteArray(image);
+            var dataInBytes = ImageToByteArray(image);
 
             List<string> prediction = null;
 
-            using (var content = new ByteArrayContent(byteData))
+            using (var content = new ByteArrayContent(dataInBytes))
             {
 
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                var response = await client.PostAsync(url, content);
+                var response = await client.PostAsync(apiUrl, content);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var responseString = await response.Content.ReadAsStringAsync();
 
-                    EvaluationModel responseModel = JsonConvert.DeserializeObject<EvaluationModel>(responseString);
+                    EvaluationModel responseContent = JsonConvert.DeserializeObject<EvaluationModel>(responseString);
 
-                    prediction = responseModel.Predictions.Where(p => p.Probability > 0.7).Select(p => p.Tag).ToList();
+                    prediction = responseContent.Predictions.Where(p => p.Probability > 0.7).Select(p => p.Tag).ToList();
                 }
                 else
                 {
                     await DisplayAlert("Error", "Something went wrong, please try again\n" + response.StatusCode, "OK");
+                    return;
                 }
 
                 _predictions = prediction;
@@ -89,7 +90,8 @@ namespace Aves
                 case 1:
                     lblIntro.Text = "We think it\'s a";
                     lblPredictionLabel.Text = prediction[0];
-                    // save search
+
+                    // save searched item
                     await SubmitSearchHistory(prediction);
                     break;
                 default:
@@ -114,17 +116,17 @@ namespace Aves
         private static async Task SubmitSearchHistory(List<string> prediction)
         {
             //get location
-            var locator = CrossGeolocator.Current;
-            locator.DesiredAccuracy = 50;
+            var locatorInstance = CrossGeolocator.Current;
+            locatorInstance.DesiredAccuracy = 40;
 
-            var position = await locator.GetPositionAsync(TimeSpan.FromSeconds(5));
+            var userPosition = await locatorInstance.GetPositionAsync(TimeSpan.FromSeconds(5));
 
-            await AzureManager.AzureManagerInstance.SubmitSearchHistory(new SearchHistoryModel()
+            await AzureData.AzureDataInstance.SubmitSearchHistory(new SearchHistoryModel()
             {
                 Bird = prediction[0],
                 Date = DateTime.Now,
-                Longitude = (float)position.Longitude,
-                Latitude = (float)position.Latitude
+                Longitude = (float)userPosition.Longitude,
+                Latitude = (float)userPosition.Latitude
             });
         }
 
